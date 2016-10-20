@@ -2,7 +2,7 @@
 In honour of this year's [NaNoWriMo][1], here is an [Übersicht][2] widget that displays a \[Part of Speech\] of the \[Refresh Frequency\], using WordsAPI.
 
 ## In Action
-![Widget in action!](screenshot.png)
+![Widget in action!](screenshot1.png)
 
 In order to use, you have to [get your own API Key for WordsAPI from Mashape][3].  The service requires you to put down a credit card, but the free tier is generous, at *2500* requests per day.
 
