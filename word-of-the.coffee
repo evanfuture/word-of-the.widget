@@ -1,23 +1,26 @@
+# You'll need an api key linked to https://market.mashape.com/wordsapi/wordsapi
 options =
-  type         : 'adjective' # Part of Speech (noun, adverb, adjective, and so on...)
-  frequencymax : '4.00' # Range from 1.74 - 8.03, with higher numbers being more frequently used words.
-  syllablesMin : '3' # Minium syllables to return
-  mashapeKey   : 'API_KEY_FROM_MASHAPE' # You'll need an api key linked to https://market.mashape.com/wordsapi/wordsapi
+  type: 'adjective' # Part of Speech (noun, adverb, adjective, and so on...)
+  frequencymax: '4.00' # Range from 1.74 - 8.03, with higher numbers being more frequently used words.
+  syllablesMin: '3' # Minium syllables to return
+  mashapeKey : ''
 
 command: ''
-refreshFrequency: '1h'
+refreshFrequency: 3600000
 
 # Initial Render.
 render: () -> """
-  <div id='word' class='card'></div>
+<div id='word' class='card'></div>
 """
 
 # Update function.
 update: (output, domEl) ->
   if !output
     @run(@buildRequest(options.type, options.frequencymax, options.syllablesMin, ''), (error, data) =>
-      if !error
+      if !error && data != ''
         @update(data)
+      else
+        return
     )
   else
     dom = $(domEl)
@@ -59,6 +62,7 @@ update: (output, domEl) ->
       html += "<div class='alike'><h3>Synonyms:</h3>"
       html += "<p class='alike_words'>#{ synonyms.join(', ') }</p>"
       html += "</div>"
+    html += "</div>"
 
     # Set our output.
     $(word).html(html)
@@ -123,6 +127,9 @@ style: """
     width: 560px
     padding: 15px
 
+  .card:empty
+    display: none
+
   p
     margin: 0
 
@@ -155,7 +162,7 @@ style: """
   .definitions
     margin: 0
     padding: 20px 20px 30px 40px
-    font-size: 1.4em
+    font-size: 1em
     font-style: italic
     list-style: circle outside
 
@@ -165,9 +172,6 @@ style: """
 
   .definitions.d2
     font-size: 1.4em
-
-  .definitions.d3
-    font-size: 1em
 
   .definition:not(:last-child)
     padding-bottom: 15px
